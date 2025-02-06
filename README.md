@@ -415,7 +415,7 @@ For Q4, within the sql file, I created two SQL statements. One to creare the SQL
    * README_images_and_gifs [FOLDER]
    * README.md
    * sql_queries_and_csvs [FOLDER]
-     * questions_sql_and_answer_csvs
+     * questions_sql_and_answer_csvs [FOLDER]
      * table_and_column_names [FOLDER]
    
 ## License Information
