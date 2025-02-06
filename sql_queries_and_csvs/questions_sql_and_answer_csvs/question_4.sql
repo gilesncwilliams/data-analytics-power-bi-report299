@@ -1,6 +1,8 @@
 /* Q4. Create a view where the rows are the store types and the columns are the total sales, 
 percentage of total sales and the count of orders */
 
+/* Run the below query first to create the view store_peformance.
+Then run the 2nd statement to see the results. */
 
 CREATE OR REPLACE VIEW store_performance AS
 SELECT
@@ -18,5 +20,6 @@ GROUP BY
     store_type
 ORDER BY 
     "percentage_of_total_sales" DESC;
+
 
 SELECT * FROM store_performance

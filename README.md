@@ -1,66 +1,144 @@
-# data-analytics-power-bi-report299
+# Data Analytics Power BI Report
+
+![Static Badge](https://img.shields.io/badge/Data%20Analytics%20Power%20BI%20Report%20for%20an%20International%20Retail%20Business-red)
+
+![Static Badge](https://img.shields.io/badge/A%20Data%20Analysis%20Project%20By-red)
+
+![Static Badge](https://img.shields.io/badge/Giles%20Williams-red)
+
+## Table of Contents
+
+- Introduction
+- Installation Instructions
+- Description of Project Tasks
+    - Loading Data
+    - Building the Data Model
+    - Creating the Report
+    - SQL Queries
+- Project File Structure
+- Licensing Information
+
+## Introduction
+
+![Static Badge](https://img.shields.io/badge/Project%20Summary-red)
+
+Design a Quarterly report for an international retail business using Power BI. The audience will be the business's C-suite executvies, as well as the Product teams and Regional Managers.
+
+![Static Badge](https://img.shields.io/badge/Project%20Scope-red)
+
+With operations spanning across United Kingdom, Germany and the USA, the business has accumulated large amounts of sales from disparate sources over the years, dating back to 2010. The majority of their stores are bricks and mortar retail stores, with a small amount of online sales through their web portal.
+
+The goal of the project is to use Microsoft Power BI to design a comprehensive Quarterly report, focusing on performamnce of their products and stores, as well as highest value customers. This will involve extracting and transforming data from various origins, designing a robust data model rooted in a star-based schema, and then constructing a multi-page report to provice actionably insights for better decision making.
+
+The report will include:
+
+- An Executive Summary page: to give an overview of company performance and check KPIs.
+- A Customer Detail page: to highlight high values customers and analysis of customer data.
+- A Product Detail page: to provide an in-depth look at which products are performing well, and the ability to look in detail at product categories and by region.
+- A Stores Map: for regional managers to track stores' quarterly profit and revenue targets.
+
+Using Power BI's filtering features, users should be able to drill down into some of the data as required.
+
+Following completion of the report, the business has also asked for some SQL queries to extract further data and share with a broader audience who do not have access to Power BI.
 
 
+## Installation Instructions
 
-## Importing Data: Methods Used
+To view the report, Microsoft Power BI is required. Power BI Desktop can be downloaded for free from Microsoft's website to view and edit the report.
+https://www.microsoft.com/en-us/download/details.aspx?id=58494
+However a license for Power BI Service is requried to publish and share reports amongst other Power BI users.
 
-### Load and Transform the Orders Table
-
-Using Power BI's Get Data function, I imported the SQL database from the Azure account.
-
-
-In the Power Queary Editor:
-
-Used the Split Column feature to separate the date and times from the [Order Date] and [Shipping Date] into their own columns
-
-Apllied a filter to the [Order Date] column to uncheck any rows with null values so they are not imported into the table in Power BI.
+Please note if using a Mac or Linux operating system you will need to run Windows on a virtual machine through a platform like Azure or Oracle.
 
 
-### Import and Transform the Products Dimension Table
+## Description of Project Tasks
 
-After importing the CSV using Power BI's data connector, I used the Remove Duplicates function on the product code to ensure each product code is unique, and removed any remaining nulls.
+What follows is a descrption of the steps I took to complete each of the tasks requried to create the Power BI report.
+
+### Loading Data
+
+The business has several sources of data in various locations and formats, including an Azure SQL Database and CSV files. Below is an overview of the process to extract, load and transform the data for each table.
+
+![Static Badge](https://img.shields.io/badge/Load%20and%20Transform%20the%20Orders%20Table-red)
+
+Using Power BI's Get Data function, I conected and extracted the SQL database from the Azure account.
+
+In Power BI's Power Queary Editor:
+
+I used the Split Column feature to separate the date and times from the [Order Date] and [Shipping Date] into their own columns.
+
+Then apllied a filter to the [Order Date] column to uncheck any rows with null values so they are not imported into the Orders table.
 
 
-### Import and Transform the Store Dimension Table
+![Static Badge](https://img.shields.io/badge/Load%20and%20Transform%20the%20Products%20Dimension%20Table-red)
 
-Imported the Stores table from Azure Blob Storage. 
-Need to use the Combine Files button in the Power Query Editor to convert and import the data from Stores.csv in the Blob's container to ensure the data imports correctly.
+
+After loading the CSV using Power BI's data connector, I used the Remove Duplicates function on the product code column to ensure each product code is unique, and then removed any remaining nulls by unchecking them in the column filter.
+
+
+![Static Badge](https://img.shields.io/badge/Load%20and%20Transform%20the%20Store%20Dimension%20Table-red)
+
+The Stores table is in a CSV on in a Azure Blob Storage container. After connecting and loading the data, I used the Combine Files button in the Power Query Editor to convert the data from the Stores.csv to ensure the data loads correctly.
 Unnecessary columns that were created during the CSV conversion process were then removed. 
 
-Used Replace Values to correct the errors with with some of the values in the Region column.
+Finally I used the Replace Values function to correct the errors with the values in the Region column.
 
-### Import and Transform the Customers Dimension Table
+![Static Badge](https://img.shields.io/badge/Load%20and%20Transform%20the%20Customers%20Dimension%20Table-red)
 
-Used the Combine and Transform feature to combine the three regional customer csvs and import as one table into Power BI.
+As the three region's customer data were in individual CSV files, I used Power BI's Combine and Transform feature to combine the CSVs and load as one table.
 
-Then created a Full Name column by combining the [First Name] and [Last Name] columns
+Then, for use in the report, I created a Full Name column by combining the [First Name] and [Last Name] columns.
 
+For each of the above tables, I renamed the tables to a single descriptive word without any abbreviations, and the columns were renamed to desciptive words using spaces as opposed to underscores or hyphens.  
 
+## Bulding the Data Model
 
-## Create the Data Model
+Once all the tables were in Power BI, I set up a dates table, the star-based schema for the database and established the relationships and cardinality between the tables and primary keys. 
 
-### Dates Table
+![Static Badge](https://img.shields.io/badge/Dates%20Table-red)
 
-I created the Date table using the below function:
+In order to make use of Power BI's time intelligence functions, I created a Date table with a contiguous set of dates from the 1st order date to the end of the current year (2023) using the below function:
 
 Dates = CALENDAR(MIN(Orders[Order Date]), DATE(2023,12,31))
 
-I had observed that the first order was 01/01/2010, so used the MIN(Orders[Order Date]) function to create the earliest date.
-And the last order was in June 2023, and as we needed to include all dates to end of the year containing the latest date in the Orders['Shipping Date'] column, I used the date 31/12/2023 in the function.
+I had observed that the first order was 01/01/2010 and the last was in June 2023. So I used the MIN(Orders[Order Date]) function to create the earliest date, and, as we needed to include all dates to end of the year containing the latest date in the Orders['Shipping Date'] column, I used the specfic date 31/12/2023 in the measure to complete the date range.
 
-The Dates tables was marked as a Date Table in Power BI to enhance filtering later on in the project. 
+I then created several new columns in the Date table and established a hierarchy for use when building the visuals in the report.
 
-### Star Schema
+Some examples of the DAX functions I used for the new date columns are:
+- Day Of Week = FORMAT('Dates'[Date], "dddd") 
+- Month Number = MONTH(Dates[Date])
+- Year = YEAR(Dates[Date]) 
+- Start Of Week = Dates[Date] - WEEKDAY(Dates[Date],2) + 1
+- Start Of Quarter = STARTOFQUARTER(Dates[Date])
+- Quarter = FORMAT(Dates[Date], "\Qq")
 
-Below is a screenshot of the star schema displaying each of the tables and relationships between each. 
+When using the FORMAT function for the Quarter column, I wanted the format to be easily readible so opted for Q1 format, which was achieve buy using the \Qq format_string.
+
+The Dates tables was then marked as a Date Table in Power BI to ensure some of the measure I created later in the project would work. 
+
+![Static Badge](https://img.shields.io/badge/Star%20Schema%20and%20Table%20Relationships-red)
+
+To build the star-based schema, I used Power BI's Relationship Manager to set up the relationships between each of the tables using :
+
+- Products[Product Code] to Orders[Product Code]
+- Stores[store code] to Orders[Store Code]
+- Customers[User UUID] to Orders[User ID]
+- Date[date] to Orders[Order Date] (ACTIVE)
+- Date[date] to Orders[Shipping Date]
+
+
+All the relationships cardinality was set to one to many in a single direction between the dimension tables and the Orders fact table.
+
+Below is a image of the star-based schema displaying each of the tables and their connecting relationships. 
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-01-30 at 11.48.03.png>)
 
-All the relationships cardinality was one to many in a single direction between the dimension tables and the Orders fact table.
 
-### Measures and Calculated Columns
+![Static Badge](https://img.shields.io/badge/Measures%20and%20Calculated%20Columns-red)
 
-After creating a dedicated Measures table, the below measures were created, along with their DAX formula:
+
+After creating a dedicated Measures table, I wrote the below measures using DAX formula language:
 
 - Total Orders = COUNTROWS(Orders)
 
@@ -76,23 +154,21 @@ After creating a dedicated Measures table, the below measures were created, alon
 
 - Profit YTD = TOTALYTD([Total Profit], Orders[Order Date])
 
+In the Stores table, I need to create some additional columns for us in the visualisations in the report. A new Country column was created using the Switch function to apply the country name to each store based on its Country Code. And a new Geography columns was created by concatenating the text strings from the Country Region and new Country columns using the & operator.
+
+Finally, a geography heirarchy was created for use in the map visualisation in the report.
 
 
 ## Creating the Report
 
+![Static Badge](https://img.shields.io/badge/Report%20Theme-red)
 
+I used the Sticky Strawberry theme from the Fabri community's theme gallery. To give the report a stylish feel, whilst maintaining a clear visual asthetic overall. 
 
+![Static Badge](https://img.shields.io/badge/Customer%20Detail%20Page-red)
 
-### Theme
-
-I used the Sticky Strawberry theme from the Fabri community's theme gallery. To give the report a stylish feel, whilst maintaining a clear overall visual asthetic. 
-
-### The Customer Detail page
-
-
-
-Here we have displayed lots of useful info about the business's customers.
-These include the visualsdisplaying the total number of unique customers, revenue, a line graph charting the number of customers, and details about the top customers based on revenue.
+Here we have shown several data points about the business's customers.
+These include the visuals displaying the total number of unique customers, revenue, a line graph charting the number of customers, and details about the top customers based on revenue.
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-01-31 at 14.20.37.png>)
 
@@ -104,87 +180,94 @@ These cards will update as the date slicer is adjusted.
 #### Summary Donut Charts
 
 These charts display Total customers by County and produict category. 
-Using the donut chart to display the share of countries and categories by customer E.g.
+Using the donut chart to display the share of countries and categories by customer:
 
  ![alt text](<README_images_and_gifs/Screenshot 2025-01-31 at 14.23.56.png>)
 
-The slices can be colour coded in Power BI's Report view Format Pane and in the Slice / Colurs section
+The slices on the donut chart can be colour coded in Power BI's Report view Format Pane and in the Slice / Colurs section:
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-01-31 at 14.21.33.png>)
 
-With cross-filtering applied, the user can click on each of the years or categories within the donut charts and the visuals across the page will update accordingly. This could be useful if you wanted to see the top customers by product category or average revenue for each category. 
+With cross-filtering applied, the user can click on slices within the donut charts and the visuals across the page will update accordingly. For example if a user wanted to see the top customers by product category or average revenue for each category. 
 
 #### Customers Trending Line Chart
 
-USing a line chart to display the increase in customer numbers over time. 
+Using a line chart to display the how the customer numbers has changed over time. 
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-01-31 at 14.22.32.png>)
 
 
 The chart can be drilled down into years, quarters and months to display more detailed as required.
 
-We can add a trend line from the format pane like so:
+I also added a trend line from the format pane:
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-01-31 at 14.22.03.png>)
 
-Using forecast we can show, based on the existing data the conitinued upward trend of customer numbers.
-The forecast displays a 95% confidence amount through ther shaded area around the forecast line.
+Using the 'Forecast' feature we can show, based on the existing data, the forecasted continuation of customer numbers. This is displayed at the right hand side of the line chart.
+
+The forecast displays a 95% confidence interval with shaded area around the forecast line and can be adjusted in the format pane:
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-01-31 at 14.22.13.png>)
 
 
-#### Creating Top Customer info
+#### Top Customer Data 
 
-Using the Table visual we can create a top 20 of customers, displaying their full name, revenue and number of orders. The full list of customers was filted using the Top N filter in the Filter pane.
+Using the Table visual we can create a table of the top 20 of customers, displaying their full name, revenue and number of orders. 
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-01-31 at 14.24.03.png>)
 
-We can add data bars to the revenue column using the Cell elements from the format pane
+The full list of customers was filted using the Top N filter in the Filter pane to narrow down the rows.
+
+ I then added data bars to the revenue column using the Cell elements from the format pane using the below options:
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-01-31 at 14.24.46.png>)
 
+
 Users can click on each of the column headers to sort the table by ascending and desending values.
 
-We also created cards for the Top customer's name, reveue and number of orders. As the card visual is limited to only one data point, I initially used a table visual to display the top cusotmers data before converting to a card to diaplay the single value.
+I also created cards for the yop customer's name, reveue and number of orders on the right hand side of the page. 
 
 
 #### Date slider
 
-Finally I added a date slider to allow users to filter the page by year.  This will affect the visuals so for example the Top customer cards and category donut charts will update according the range of years entered in the slider.
+Finally I added a date slider to allow users to filter the page by year.  This will affect the visuals on this page of the report, so for example the Top Customer cards and product category donut charts will update according to the range of years selected with the slider.
 
 
+![Static Badge](https://img.shields.io/badge/Executive%20Summary%20Page-red)
 
-### The Executive Summary page
+The next task was to create a dashboard style report page for a high level summary of key metrics to give an overview of the company's performance.
 
-The next task was to create a report page for the high level executive summary of key metric to give an overview of the companies performance.
-The page can be filtered by date to allow for narrowing in on the data for different time periods as required.
+The page can also be filtered by date to allow for drilling down into the data for different time periods as required.
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-03 at 12.11.33.png>)
 
 
-#### Card Visuals for key metrics
+#### Card Visuals for Key Metrics
+
+Simple card visuals were used to display some of the key measures on the business performance.
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-03 at 12.25.08.png>)
 
-#### Revenue trending line chart
+#### Revenue Trending Line chart
 
 Similarly to the Customer page, here is displayed a line chart showing the total revenue from 2010 onwards. Included are a trend line and forecasting.
 
+![alt text](<README_images_and_gifs/Screenshot 2025-02-03 at 12.21.55.png>)
 
-#### Revenue by Country and store type donuts charts
+#### Revenue by Country and Store Type Donuts Charts
 
-In a similar style to the donut charts on the Customer Page, here we are displaying the showing Total Revenue broken down by the stores' countries and type.
+In a similar style to the donut charts on the Customer Page, here are visuales showing Total Revenue broken down by the stores' countries and store type.
 
 #### Bar Chart of Orders by Product Category
 
-Using the bar chart to display the number of orders per product category. 
+Using a bar chart to display the number of orders per product category. 
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-03 at 12.20.46.png>)
 
 
-#### KPIs
+#### KPI Cards
 
-Using the PREVIOUSQUARTER DAX function, I created Target revenue, profit and orders measures. These targets, equal to 5% growth in each measure compared to the previous quarter
+Using the PREVIOUSQUARTER DAX function, I created Target revenue, profit and orders measures for KPI visuals. These targets are equal to 5% growth in each measure compared to the previous quarter.
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-03 at 12.20.59.png>)
 
@@ -197,23 +280,19 @@ CALCULATE(
     PREVIOUSQUARTER('Dates'[Date])
 ) * 1.05
 
-This Target Revenue measure is used to as the 'target' field in the KPI card, and when the page is filtered on a particular quarter the 3 KPI visuals will update to reflect the peformacne of the quarter compared to its target (a 5% increase from the previous quarter)
+This Target Revenue measure is used to as the 'target' field in the KPI card, and when the page is filtered on a particular quarter, the three KPI visuals will update to reflect the peformance for that quarter compared to its target (a 5% increase from the previous quarter)
 
-How I set the trend axis, Start of Quarter, so the the colours and icons change depending upon the revenue, profit or number of orders performed compared to the target. White is good, red is bad. 
+The below image shows how I set up the Tend axis, in this case Start of Quarter, so that the colours and icons change depending upon how the revenue, profit or number of orders performed compared to the target. - white is good, red is bad; alongside an icon to emphasise this.
+
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-03 at 12.18.08-1.png>)      
-
-
 
 #### Cross-filtering
 
-As mentioned above, cross-filtering is enabled on this page so users can click on different quarters in the line graph and the visuals will update accordingly. E.g. by clicking on Q2 2023, the KPI cards will update to show performance for that quarter.
+As mentioned above, cross-filtering is enabled on this page so users can click on different quarters in the line graph and the visuals will update accordingly. E.g. by clicking on Q2 2023, the KPI cards will update to show performance for that quarter. However the Product Cateogry bar chart is restricted from Top 10 products table, to avoid
 
-![alt text](<README_images_and_gifs/Screenshot 2025-02-03 at 12.21.55.png>)
+![Static Badge](https://img.shields.io/badge/Product%20Detail%20Page-red)
 
-
-### The Product Detail page
-
-THis page is designed to both give to top-line overview of the product category performance and, using the page's slicer toolbar, an in-depth look at product category and which products are performing well. 
+The Product page is page is designed to give both a to top-line overview of the products' performance and, using the page's slicer toolbar, an in-depth look at each product category and region.
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-04 at 09.47.04.png>)
 
@@ -223,45 +302,122 @@ THis page is designed to both give to top-line overview of the product category 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-04 at 09.48.32.png>)
 
 Three guage's showing the revenue, profit and orders of the current quarter's performance when compared to a target of the previous quarter's value + 10%.
-The guages were set up with the Total Profit as the value and then the 10& Target as the Max value in the guage. 
+The guages were set up with the Total Profit as the value and then the 10% Target as the Max value in the guage:
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-04 at 09.52.21.png>)
 
-then using conditional formatting to colour the callout value red if the goal had not yet been reached.
+By adding conditional formatting to colour of the guage, the callout value will change to red if the goal had not yet been reached.
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-04 at 09.52.36.png>)
 
-Finally a filter was added to each of the guages to filter the data just for the current quarter
+Finally a filter was added to each of the guages to filter the data just for the current quarter.
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-04 at 09.51.52.png>)
 
 
 
-#### Using an Area Chart to display revenue by Product Category
+#### Using an Area Chart to Display Revenue by Product Category
 
-This chart displays how the different product categories have performed over time, allowing the products team to identify any trends from past peformance. Again this chart can be filtered by prodcut category and region using the toolbar slicer or clicking within the graph on different time periods to drill down further, also updating the scatter graph and Top 10 products for that time period.
+This chart displays how the different product categories have performed over time, allowing the products team to identify any trends from past peformance. Again this chart can be filtered by product category and region using the toolbar slicer or clicking within the graph on different time periods to drill down further, also updating the scatter graph and Top 10 products for that time period.
 
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-04 at 09.48.03.png>)
 
 
-#### Top 10 Perfomring products visual
+#### Top 10 Performing Products Table
 
 Using a table to visualise the top 10 products across the business. Displaying the total revenue, total orders and total profit for each product. Again the table will adapt following user selected filtering from the slicer toolbar.
 
 #### Scatter Graph of Quantity Sold vs Profit per item
 
+
+To assist the Product Team in making recommedations for products to the marketing team for a promotional campaign, I created a scatter graph to visualisae which product ranges are both top-selling items and also profitable, and using the slicer (see below) the graph can be filtered by product category and/or country for specific regional targeteed marketing campaigns. 
+
 ![alt text](<README_images_and_gifs/Screenshot 2025-02-04 at 09.48.47.png>)
-
-
-To assist the Product Team in making recommedations for products to the marketing team for a promotional campaign.  icreated a visual that allows them to quickly see which product ranges are both top-selling items and also profitable, and using the slicer (See below) the graph can be filtered by prodcut category and/or country for specific regional targeteed marketing campaigns. 
 
 #### Slicer Toolbar
 
-To manage how the page is filtered, I set up a slicer toobbar that, upon clicking the filter icon in the navigation bar, pop-out out to reveal the slicer options for Country and Product Category so users can easily filter the page to drill down into the data for each product further.
+To manage how the page is filtered, I set up a slicer toolbar that, upon clicking the filter icon in the navigation bar, pops-out to reveal the slicer options for Country and Product Category. Making it easy for users to filter the page to drill down into the data for each product further.
 
-After setting up the slicers on the toolbox, I used Power BI's bookmark feature to take snapshots of the toolbar open and closed and then assigned the corresponding bookmark to the filter button at the top of the navigation bar, and back button on the toolbar to close the toolbar. 
+After setting up the slicers on the toolbox, I used Power BI's bookmark feature to take snapshots of the toolbar open and closed.  Then assigned the corresponding bookmark to the filter button at the top of the navigation bar. Finally adding a back button on the toolbar to close the toolbar to avoid getting in the way.
 
-#### Filter state cards
+![alt text](README_images_and_gifs/prodcut_page_slicer.gif)
 
-These are designed to keep track of the current slicer filter state of the product page so users can see what is being filted on the page by the slicers in the toolbar.
+To keep track of the current slicer filter state of the product page, cards were added at the top left of the page showing the product category and region selections.
+
+![Static Badge](https://img.shields.io/badge/Stores%20Map%20Page-red)
+
+To visualise the performance of the store, and for regional managers to check on the stores under their control, I created a Store Map page. Each bubble on the map represents a store's Profit year to date.
+
+
+![alt text](<README_images_and_gifs/Screenshot 2025-02-06 at 14.33.26.png>)
+
+
+Each region can be zoomed in for closer insepction and, using Power BI's Tooltips, by hovering the cursor over each bubble, users can see a store's Profit YTD compared to a target profit from the previous year's same year to day period + 20%. 
+
+![alt text](<README_images_and_gifs/Screenshot 2025-02-06 at 14.34.29.png>)
+
+Displaying visuals as tooltips is set up from the visual's Properties page by selecting a seperate page reserved for Tooltip visuals from the Options drop down list.
+
+Users can also filter the map using the region slicers at the top of the page.
+
+To drill down into more detail on a particular store region, users can zoom into the store they wish to look at, and right click on the store region's bubble and select Stores Drillthrough. This will take the user to a separate page displaying that store region's top 5 products, total orders by category and how it is performing against its profit and revenue goals.
+
+![alt text](README_images_and_gifs/stores_map.gif)
+
+#### Stores Drillthrough Page
+
+The drillthrough feature is set up by creating a separate drillthrough page and selecting it as Drillthrough type in the Page information section of its Format pane.
+
+![alt text](<README_images_and_gifs/Screenshot 2025-02-06 at 14.54.00.png>)
+
+On the stores drillthrough page, there are year-to-date measures for Profit and Revenue, as well as goals for each.
+As mentioned above, the goals are based on the store's previous year-to-date performance plus 20%. To calculate the goals I used the SAMEPERIODLASTYEAR function, as the measure would update depending upon which quarter a user wished to look at. For example.
+
+Revenue Goal = 
+CALCULATE(
+    [Revenue YTD], 
+    SAMEPERIODLASTYEAR('Dates'[Date])
+) * 1.2
+
+![alt text](<README_images_and_gifs/Screenshot 2025-02-06 at 14.35.12.png>)
+
+![Static Badge](https://img.shields.io/badge/Cross-Filtering%20and%20Navigation-red)
+
+#### Cross-Filtering
+
+To enhance the user experience, I have used Power BI's cross-filtering feature to filter the visuals on a page when a data point on one visual is selected. However we don't always want all visuals to be updated in this way, so using the Edit Interactions button I restricted some of the visuals to not cross-filter when selected. For example on the Orders vs Profitability scatter graph on the Product Detail page, I did not want this to affect any other visual when datapoints were selected, as the points on the scatter graph were individual products and too granualar for this report.
+
+
+
+#### Navigation Bar
+
+For each page, I created a Navigation bar so users can easily switch between the pages. This was set up by inserting Buttons on the navigation bars and assigning Page navigation as the button's actionin the Format > Button Style pane. An image was then added to the button icon to match the colour theme of the report. 
+
+![alt text](<README_images_and_gifs/Screenshot 2025-02-06 at 14.33.32.png>)
+
+
+![Static Badge](https://img.shields.io/badge/SQL%20Queries-red)
+
+The final task of the project was to write SQL queries on the database to answer specific questions that could be shared with a broader audience. 
+
+Each SQL query file and corresponding answers in a CSVs are saved in the sql_queries_and_csvs folder in the repository, as well as CSVs of the tables names and columns. 
+
+Notes on the SQL queries:
+
+As I wanted to round any resulting currency based values or percentages to 2 decimal places using the ROUND function, I had to use the '::numeric' syntax to cast some of the double precision column values (e.g. sale price) as numeric data type, as I did not have permission to change the data types in the database, hence why some of the queries are quite long.
+
+For Q4, within the sql file, I created two SQL statements. One to creare the SQL view called store_performance, and an additional SELECT statement to view the result.
+
+## Project File Structure
+
+ * data_analytics_power_bi_report
+   * Data Analytics Power BI Report Project - Final.pbix
+   * README_images_and_gifs [FOLDER]
+   * README.md
+   * sql_queries_and_csvs [FOLDER]
+     * questions_sql_and_answer_csvs
+     * table_and_column_names [FOLDER]
+   
+## License Information
+This repo is unlicensed as it is intended for training purposes only .
 
