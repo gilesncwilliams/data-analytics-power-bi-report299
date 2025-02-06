@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "powerbi-data-analytics-server.postgres.database.azure.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "database": "postgres",
+            "username": "powerbi_read_only",
+            "password": "Bk78g!4j",
+            "name": "aicore-power_bi-connection"
+        }
+    ]
+}
