@@ -123,7 +123,7 @@ To build the star-based schema, I used Power BI's Relationship Manager to set up
 - Dates[Date] to Orders[Shipping Date]
 
 
-All the relationships cardinality was set to one to many in a single direction between the dimension tables and the Orders fact table. And The Date[Date] to Order[Order Date] was set as the active relationship between those to tables. 
+All the relationships' cardinality was set to one to many in a single direction between the dimension tables and the Orders fact table. And The Date[Date] to Order[Order Date] was set as the active relationship between those to tables. 
 
 Below is a image of the star-based schema displaying each of the tables and their connecting relationships. 
 
