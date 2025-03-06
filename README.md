@@ -86,7 +86,7 @@ Then, for later use in the report, I created a Full Name column by combining the
 
 For each of the above tables, I renamed the tables to a single descriptive word without any abbreviations, and the columns were renamed to desciptive words using spaces, as opposed to underscores or hyphens.  
 
-## Bulding the Data Model
+### Bulding the Data Model
 
 Once all the tables were in Power BI, I set up a dates table, the star-based schema for the database and established the relationships and cardinality between the tables and primary keys. 
 
@@ -154,11 +154,11 @@ In the Stores table, I needed to create some additional columns for some of the 
 Finally, a geography heirarchy was created for use in the map visualisation in the report.
 
 
-## Creating the Report
+### Creating the Report
 
 ![Static Badge](https://img.shields.io/badge/Report%20Theme-red)
 
-I used the Sticky Strawberry theme from the Microsoft Fabric community's theme gallery. To give the report a stylish feel, whilst maintaining a clear and readable visual asthetic overall. 
+I used the Sticky Strawberry theme from the Microsoft Fabric community's theme gallery. To give the report a stylish feel, whilst maintaining a clear and readable visual aesthetic overall. 
 
 ![Static Badge](https://img.shields.io/badge/Customer%20Detail%20Page-red)
 
