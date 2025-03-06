@@ -11,10 +11,6 @@
 - Introduction
 - Installation Instructions
 - Description of Project Tasks
-    - Loading Data
-    - Building the Data Model
-    - Creating the Report
-    - SQL Queries
 - Project File Structure
 - Licensing Information
 
